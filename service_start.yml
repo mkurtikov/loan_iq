@@ -1,0 +1,6 @@
+- name: Stop service
+  win_service:
+    name: STARTLIQ_2020
+    start_mode: manual
+    state: stopped
+

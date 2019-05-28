@@ -1,0 +1,18 @@
+ansible_winrm_transport: ntlm
+ansible_user: DEVELOP\svcEnkeDepolyments
+ansible_password: FarmCreditBank#1
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_port: 5985
+ansible_winrm_send_cbt: false
+domain_admin_user: svcEnkeDepolyments@develop.fcbt
+domain_admin_password: FarmCreditBank#1
+dns_domain_name: develop.fcbt
+
+#Variables
+sourcecmeappfolder: 'C:\FBLCME'
+targetcmeappfolder: 'C:\'
+sourcecmebrokerfolder: 'C:\inetpub\wwwroot'
+targetcmebrokerfolder: 'C:\inetpub'
+sourceloaniqfolder: 'C:\LOANIQ'
+targetloaniqfolder: 'C:\'

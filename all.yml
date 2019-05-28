@@ -1,0 +1,36 @@
+---
+- hosts: all
+  gather_facts: no
+  roles:
+    - common
+  vars_files:
+    - "vars/main.yml"
+
+- hosts: cmedb
+  gather_facts: true
+  roles:
+    - CMEDB
+  vars_files:
+    - "vars/main.yml"
+
+- hosts: loaniqdb
+  gather_facts: false
+  roles:
+    - LOANIQDB
+  vars_files:
+    - "vars/main.yml"
+
+- hosts: restapi
+  gather_facts: false
+  roles:
+    - RESTAPI
+  vars_files:
+    - "vars/main.yml"
+
+- hosts: misysboard
+  gather_facts: true
+  roles:
+    - MISYSBRD
+  vars_files:
+    - "vars/main.yml"
+
