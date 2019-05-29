@@ -1,0 +1,6 @@
+- hosts: cmedb
+  gather_facts: false
+  roles:
+    - CMEDB
+  vars_files:
+    - "vars/main.yml"
