@@ -1,0 +1,88 @@
+- name: Copy FBLCME to target
+  become_method: runas
+  win_shell: copy-item \\10.10.12.150\FBLCME -destination C:\ -recurse
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Copy inetpub to target
+  become_method: runas
+  win_shell: copy-item \\10.10.12.150\c$\inetpub -destination C:\ -recurse
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in Tomcat8.5 server.xml file
+  become_method: runas
+  win_shell: ((get-content -path C:\FBLCME\Tomcat8.5\conf\server.xml -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  C:\FBLCME\Tomcat8.5\conf\server.xml
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in Tomcat8.5 web.xml file
+  become_method: runas
+  win_shell: ((get-content -path C:\FBLCME\Tomcat8.5\conf\web.xml -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  C:\FBLCME\Tomcat8.5\conf\web.xml
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Create C:\FBLCME share and set permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_share:
+    name: FBLCME
+    path: C:\FBLCME
+    full: Administrators
+    read: Everyone
+
+- name: Create C:\FBLCME\Tomcat8.5 share and set permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_share:
+    name: FBLCME Tomcat
+    path: C:\FBLCME\Tomcat8.5
+    full: Administrators
+    read: Everyone
+
+- name: Set C:\FBLCME folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\FBLCME
+    user: Everyone
+    rights: ReadAndExecute, ListDirectory
+    type: allow
+    propagation: 'None'
+
+- name: Set C:\FBLCME\Tomcat8.5 folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\FBLCME\Tomcat8.5
+    user: Everyone
+    rights: ReadAndExecute, ListDirectory
+    type: allow
+
+- name: Set C:\FBLCME folder permissions
+  become_method: runas
+  become: yes
+  become_user: iyakubenko0519@nterprise.net
+  win_acl:
+    path: C:\FBLCME
+    user: DBA_Admins@nterprise.net
+    rights: FullControl
+    type: allow
+  vars:
+    ansible_become_password: L3tsdanc311!!Ok3
+
+- name: Set C:\FBLCME\Tomcat8.5 folder permissions
+  become_method: runas
+  become: yes
+  become_user: iyakubenko0519@nterprise.net
+  win_acl:
+    path: C:\FBLCME\Tomcat8.5
+    user: DBA_Admins@nterprise.net
+    rights: FullControl
+    type: allow
+  vars:
+    ansible_become_password: L3tsdanc311!!Ok3
