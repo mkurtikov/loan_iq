@@ -1,12 +1,12 @@
 - name: Copy FBLCME to target
   become_method: runas
-  win_shell: copy-item \\10.10.12.150\FBLCME -destination C:\ -recurse
+  win_shell: copy-item "{{sourcecmeappfolder}}" -destination "{{targetcmeappfolder}}" -recurse
   become: yes
   become_user: svcEnkeDeployments@develop.fcbt
 
 - name: Copy inetpub to target
   become_method: runas
-  win_shell: copy-item \\10.10.12.150\c$\inetpub -destination C:\ -recurse
+  win_shell: copy-item "{{targetcmewebfolder}}" -destination "{{targetcmewebfolder}}" -recurse
   become: yes
   become_user: svcEnkeDeployments@develop.fcbt
 
@@ -21,6 +21,31 @@
   win_shell: ((get-content -path C:\FBLCME\Tomcat8.5\conf\web.xml -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  C:\FBLCME\Tomcat8.5\conf\web.xml
   become: yes
   become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove C:\FBLCME\Tomcat8.5\conf\logs folder
+  win_file:
+    path: C:\FBLCME\Tomcat8.5\conf\logs
+    state: absent
+
+- name: Remove C:\FBLCME\Tomcat8.5\conf\temp folder
+  win_file:
+    path: C:\FBLCME\Tomcat8.5\conf\temp
+    state: absent
+
+- name: Remove C:\FBLCME\Tomcat8.5\conf\Webapps folder
+  win_file:
+    path: C:\FBLCME\Tomcat8.5\conf\Webapps
+    state: absent
+
+- name: Remove C:\FBLCME\Tomcat8.5-Scheduler-DDT\conf\logs folder
+  win_file:
+    path: C:\FBLCME\Tomcat8.5-Scheduler-DDT\conf\logs
+    state: absent
+
+- name: Remove C:\FBLCME\Tomcat8.5-Scheduler-HDE\conf\logs folder
+  win_file:
+    path: C:\FBLCME\Tomcat8.5-Scheduler-HDE\conf\logs
+    state: absent
 
 - name: Create C:\FBLCME share and set permissions
   become_method: runas
