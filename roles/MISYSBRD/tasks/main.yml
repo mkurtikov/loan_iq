@@ -12,10 +12,29 @@
       name: TapiSrv
       state: stopped
 
+   
+  - name: Create directory Release
+    win_file:
+      path: C:\Release\FBL_2.2.20
+      state: directory
+
+
+  - name: Create directory LOANIQ
+    win_file:
+      path: C:\LOANIQ\Server
+      state: directory
+
+
+  - name: Copy LOANIQ to Release
+    become_method: runas
+    win_shell: copy-item \\10.10.12.151\loaniq\Server  -destination C:\Release\FBL_2.2.20 -recurse
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+   
 
   - name: Copy LOANIQ to target
     become_method: runas
-    win_shell: copy-item \\10.10.12.151\loaniq  -destination C:\ -recurse
+    win_shell: copy-item \\10.10.12.151\loaniq\Server\misysboard_node  -destination C:\LOANIQ\Server -recurse
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
 
@@ -36,6 +55,14 @@
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
 
+  
+  - name: Remove subfolders
+    become_method: runas
+    win_shell: Get-ChildItem -Path C:\loaniq\Server\misysboard_node\data\Users -Recurse| Foreach-object {Remove-item -Recurse -path $_.FullName }
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+
+  
 
   - name: Share and set permissions C:\LOANIQ
     become_method: runas
@@ -47,6 +74,29 @@
       full: Administrators
       read: Everyone
 
+
+  - name: Set C:\LOANIQ  folder permissions
+    become_method: runas
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+    win_acl:
+      path: C:\LOANIQ
+      user: Everyone
+      rights: ReadAndExecute, ListDirectory
+      type: allow
+      propagation: 'None'
+
+  - name: Set C:\LOANIQ folder permissions
+    become_method: runas
+    become: yes
+    become_user: iyakubenko0519@nterprise.net
+    win_acl:
+      path: C:\LOANIQ
+      user: DBA_Admins@nterprise.net
+      rights: FullControl
+      type: allow
+    vars:
+      ansible_become_password: L3tsdanc311!!Ok3
 
   - name: Start a service
     win_service:
