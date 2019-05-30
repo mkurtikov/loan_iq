@@ -1,0 +1,55 @@
+---
+- hosts: source
+  gather_facts: false
+  
+  vars_files:
+    - "vars/main.yml"
+
+
+  tasks:
+  - name: Stop a service
+    win_service:
+      name: TapiSrv
+      state: stopped
+
+
+  - name: Copy LOANIQ to target
+    become_method: runas
+    win_shell: copy-item \\10.10.12.151\loaniq  -destination C:\ -recurse
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+
+
+  - name: Change Hostname in mb-package.json
+    become_method: runas
+    win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace 'FBLQARAPI','ENKEFBLDEVAPI') | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+
+
+  - name: Change Hostname in config.json
+    become_method: runas
+    win_shell: |
+      $json = Get-Content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json' -raw | ConvertFrom-Json
+      $json.connection | % {if($_.serverName -eq 'FBLQAUXP.develop.fcbt'){$_.serverName='ENKEFBLDEVUXP.develop.fcbt'}}
+      $json | ConvertTo-Json -depth 32| set-content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json'
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+
+
+  - name: Share and set permissions C:\LOANIQ
+    become_method: runas
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+    win_share:
+      name: LOANIQ
+      path: C:\LOANIQ
+      full: Administrators
+      read: Everyone
+
+
+  - name: Start a service
+    win_service:
+      name: TapiSrv
+      state: started
+
