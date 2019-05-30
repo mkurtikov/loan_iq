@@ -64,6 +64,12 @@
   become: yes
   become_user: svcEnkeDeployments@develop.fcbt
 
+- name: Encrypt the server\LS2APP.ini password
+  become_method: runas
+  win_shell: "cmd.exe /c C:\LOANIQ\SERVER\ls2util -util ENCR_PASS -pwd LIQPASSWORD -ini C:\LOANIQ\SERVER\LS2APP.ini > pwd.out"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
 - name: Create C:\LOANIQ\CLIENT share and set permissions
   become_method: runas
   become: yes
