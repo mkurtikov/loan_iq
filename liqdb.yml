@@ -1,0 +1,6 @@
+- hosts: loaniqdb
+  gather_facts: false
+  roles:
+    - LOANIQDB
+  vars_files:
+    - "vars/main.yml"

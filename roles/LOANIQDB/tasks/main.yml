@@ -1,0 +1,147 @@
+- name: Copy FBLMT to target
+  become_method: runas
+  win_shell: copy-item \\10.10.12.153\LOANIQ -destination C:\ -recurse
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in server l2sapp.ini file
+  become_method: runas
+  win_shell: ((get-content -path C:\LOANIQ\SERVER\L2SAPP.ini -Raw) -replace 'fblqamt','enkefbldevmt') | set-content -path  C:\LOANIQ\SERVER\L2SAPP.ini
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: rename in LIQSETENV_FBLQAMT.cmd file
+  become_method: runas
+  win_shell: "cmd.exe /c rename C:\LOANIQ\SERVER\LIQSETENV_FBLQAMT.cmd C:\LOANIQ\SERVER\LIQSETENV_ENKEFBLDEVMT.cmd"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in context.xml
+  become_method: runas
+  win_shell: ((get-content -path C:\LOANIQ\SERVER\Tomcat\conf\context.xml -Raw) -replace 'fblqamt','enkefbldevmt') | set-content -path  C:\LOANIQ\SERVER\Tomcat\conf\context.xml
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in jsqlaccessproperties.xml
+  become_method: runas
+  win_shell: ((get-content -path C:\LOANIQ\SERVER\Tomcat\jrconf\jsqlaccessproperties.xml -Raw) -replace 'fblqamt','enkefbldevmt') | set-content -path  C:\LOANIQ\SERVER\Tomcat\jrconf\jsqlaccessproperties.xml
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove Tomcats logs
+  become_method: runas
+  win_shell: "cmd.exe /c del C:\LOANIQ\SERVER\Tomcat\logs\* /s /q"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove Tomcats temp folder content
+  become_method: runas
+  win_shell: "cmd.exe /c del C:\LOANIQ\SERVER\Tomcat\temp\* /s /q"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove Tomcats Jackrabbit folder
+  become_method: runas
+  win_shell: "cmd.exe /c rmdir C:\LOANIQ\SERVER\Tomcat\webapps\Jackrabbit /s /q"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove Tomcats liq_APIWebService folder
+  become_method: runas
+  win_shell: "cmd.exe /c rmdir C:\LOANIQ\SERVER\Tomcat\webapps\liq_APIWebService /s /q"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Remove Tomcats liq_LinkageMap folder
+  become_method: runas
+  win_shell: "cmd.exe /c rmdir C:\LOANIQ\SERVER\Tomcat\webapps\liq_LinkageMap /s /q"
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Change Hostname in client l2sapp.ini file
+  become_method: runas
+  win_shell: ((get-content -path C:\LOANIQ\CLIENT\L2SAPP.ini -Raw) -replace 'fblqamt','enkefbldevmt') | set-content -path  C:\LOANIQ\CLIENT\L2SAPP.ini
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+
+- name: Create C:\LOANIQ\CLIENT share and set permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_share:
+    name: CLIENT
+    path: C:\LOANIQ\CLIENT
+    full: Administrators
+    read: Everyone
+
+- name: Set C:\LOANIQ\CLIENT folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\CLIENT
+    user: Everyone
+    rights: ReadAndExecute, ListDirectory
+    type: allow
+    propagation: 'None'
+
+- name: Set C:\LOANIQ\CLIENT folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\CLIENT
+    user: DBA_Admins@nterprise.net
+    rights: FullControl
+    type: allow
+
+- name: Set C:\LOANIQ\CLIENT folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\CLIENT
+    user: Administrators@nterprise.net
+    rights: FullControl
+    type: allow
+
+- name: Create C:\LOANIQ\SERVER share and set permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_share:
+    name: SERVER
+    path: C:\LOANIQ\SERVER
+    full: Administrators
+    read: Everyone
+
+- name: Set C:\LOANIQ\SERVER folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\SERVER
+    user: Everyone
+    rights: ReadAndExecute, ListDirectory
+    type: allow
+    propagation: 'None'
+
+- name: Set C:\LOANIQ\SERVER folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\SERVER
+    user: DBA_Admins@nterprise.net
+    rights: FullControl
+    type: allow
+
+- name: Set C:\LOANIQ\SERVER folder permissions
+  become_method: runas
+  become: yes
+  become_user: svcEnkeDeployments@develop.fcbt
+  win_acl:
+    path: C:\LOANIQ\SERVER
+    user: Administrators@nterprise.net
+    rights: FullControl
+    type: allow
