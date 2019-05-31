@@ -9,3 +9,6 @@ FBLTESTRAPI.develop.fcbt
 
 [misysboard]
 FBLTESTUXP.develop.fcbt
+
+[RESTAPI]
+ENKEFBLDEVRAPI.develop.fcbt

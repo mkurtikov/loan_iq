@@ -1,0 +1,110 @@
+---
+  - name: 'Check that the LOANIQ folder exists'
+    win_stat:
+      path: 'C:\LOANIQ'
+    register: stat_file
+
+  - name: 'Ensure Release folder exist'
+    win_file:
+      path: 'C:\Releases'
+      state: directory
+    when: stat_file.stat.exists == True
+
+  - name: 'Ensure FBL folder exist'
+    win_file:
+      path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+      state: directory
+    when: stat_file.stat.exists == True
+
+  - name: 'Quick Backup to Release folder'
+    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ LatestRelese }}"
+    become: true
+    become_method: runas
+    become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+    when: stat_file.stat.exists == True
+
+  - name: 'Copy folder from  {{ SharePath }}'
+    win_shell: "Copy-Item -Path {{ SharePath}}* -Destination C:\\ -recurse -Force"
+    become: true
+    become_method: runas
+    become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+
+  - name: 'Rename LIQSETENV_{{ MainSourceServer }}.cmd'
+    win_shell: "mv C:\\LOANIQ\\SERVER\\LIQSETENV_{{ MainSourceServer }}.cmd C:\\LOANIQ\\SERVER\\LIQSETENV_{{ MainTargetServer }}.cmd"
+
+  - name: 'Replace string'
+    win_shell: (get-content {{ item.path }}) | foreach-object {$_ -replace "{{ item.sourceline }}", "{{ item.targetline }}"} | set-content {{ item.path }}
+    with_items:
+      - { path: 'C:\LOANIQ\SERVER\LS2APP.ini', sourceline: "{{ SourceMThost }}", targetline: "{{ TargetMThost}}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcat\conf\context.xml', sourceline: "{{ SourceBEhost }}", targetline: "{{ TargetBEhost}}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcat\jrconf\jsqlaccessproperties.xml', sourceline: "{{ SourceBEhost }}", targetline: "{{ TargetBEhost}}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcatrest\LS2APP.ini', sourceline: "{{ SourceFBLhost }}", targetline: "{{ TargetFBLhost}}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcatrestquery\LS2APP.ini', sourceline: "{{ SourceFBLhost }}", targetline: "{{ TargetFBLhost}}" }
+
+  - name: 'Delete folder content'
+    win_shell: 'Remove-Item –path {{ item }}* -include *.*'
+    args:
+      chdir: "{{ item }}"
+    with_items:
+      - 'C:\LOANIQ\SERVER\Tomcat\logs\'
+      - 'C:\LOANIQ\SERVER\Tomcat\temp\'
+      - 'C:\LOANIQ\SERVER\Tomcatrest\logs\'
+      - 'C:\LOANIQ\SERVER\Tomcatrest\temp\'
+      - 'C:\LOANIQ\SERVER\Tomcatrestquery\logs'
+      - 'C:\LOANIQ\SERVER\Tomcatrestquery\temp'
+
+  - name: 'Remove directory structure'
+    win_file:
+      path: "C:\\LOANIQ\\SERVER\\Tomcat\\webapps\\{{ item }}"
+      state: absent
+    with_items:
+      - Jackrabbit
+      - liqAPIWebService
+      - liq_LinkageMap
+
+  - name: 'Encrypt the LS2APP.ini password'
+    win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
+    args:
+      chdir: C:\LOANIQ\SERVER\
+      executable: cmd
+
+  - name: 'Encrypt password'
+    win_shell: "SCRIPT.CMD"
+    args:
+      chdir: C:\LOANIQ\SERVER\
+      executable: cmd
+      stdin: "{{ LIQPASSWORD }}"
+    register: EncrypredPassword
+
+  - set_fact: pwd="{{ EncrypredPassword.stdout | trim }}"
+
+  - debug:
+      msg: "{{ pwd }}"
+
+  - name: 'Replace string'
+    win_lineinfile:
+      path: "{{ item.path }}"
+      regexp: "{{ item.sourceline }}"
+      line: "{{ item.targetline }}"
+    with_items:
+      - { path: "C:\\LOANIQ\\SERVER\\Tomcat\\conf\\context.xml", sourceline: "password=*.*", targetline: 'password="{{ pwd }}"'}
+      - { path: "C:\\LOANIQ\\SERVER\\Tomcat\\jrconf\\jsqlaccessproperties.xml", sourceline: '<entry key="DBDefaultPassword*', targetline: '<entry key="DBDafaultPassword">{{ pwd }}</entry>' }
+
+  - name: 'Create share and set acl'
+    win_share:
+     name: LOANIQ
+     path: C:\LOANIQ
+     list: no
+     full: Administrators
+     read: Everyone
+
+  - name: 'Set  ACL for folder'
+    win_acl:
+      path: C:\LOANIQ
+      type: allow
+      rights: "{{ item.rights }}"
+      user: "{{ item.users }}"
+    with_items:
+     - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
+     - { rights: 'FullControl', users: Administrators}
+     - { rights: 'FullControl', users: DBA_Admins}
