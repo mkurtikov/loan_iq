@@ -1,0 +1,77 @@
+---
+- name: Stop all services on cmedb
+  hosts: cmedb
+  gather_facts: false
+  vars_files:
+    - "vars/main.yml"
+
+  tasks:
+   - name: Stop FBLCME-MongoDB service
+     win_service:
+       name: FBLCME-MongoDB
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+   - name: Stop FBLCME-Tomcat8.5 service
+     win_service:
+       name: FBLCME-Tomcat8.5
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+   - name: Stop FBLCME-Tomcat8.5-Scheduler-DDT service
+     win_service:
+       name: FBLCME-Tomcat8.5-Scheduler-DDT
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+   - name: Stop FBLCME-Tomcat8.5-Scheduler-HDE service
+     win_service:
+       name: FBLCME-Tomcat8.5-Scheduler-HDE
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+- name: Stop service on loaniqdb
+  hosts: loaniqdb
+  gather_facts: false
+  vars_files:
+    - "vars/main.yml"
+
+  tasks:
+   - name: Stop Loaniq service
+     win_service:
+       name: STARTLIQ_2020
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+- name: Stop service on restapi
+  hosts: restapi
+  gather_facts: false
+  vars_files:
+    - "vars/main.yml"
+
+  tasks:
+   - name: Stop Loaniq service
+     win_service:
+       name: STARTLIQ_2020
+       state: stopped
+       start_mode: manual
+       username: LocalSystem
+
+- name: Stop service on misysboard
+  hosts: misysboard
+  gather_facts: false
+  vars_files:
+    - "vars/main.yml"
+
+  tasks:
+   - name: Stop Loaniq service
+     win_service:
+       name: FBL_Misysboard
+       state: stopped
+       start_mode: manual
+       username: LocalSystem

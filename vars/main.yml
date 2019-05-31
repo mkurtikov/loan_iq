@@ -10,9 +10,9 @@ domain_admin_password: FarmCreditBank#1
 dns_domain_name: develop.fcbt
 
 #Variables
-sourcecmeappfolder: 'C:\FBLCME'
+sourcecmeappfolder: '\\10.10.12.150\FBLCME'
+sourcecmewebfolder: '\\10.10.12.150\c$\inetpub'
 targetcmeappfolder: 'C:\'
-sourcecmebrokerfolder: 'C:\inetpub\wwwroot'
-targetcmebrokerfolder: 'C:\inetpub'
+targetcmewebfolder: 'C:\'
 sourceloaniqfolder: 'C:\LOANIQ'
 targetloaniqfolder: 'C:\'
