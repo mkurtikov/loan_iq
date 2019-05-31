@@ -16,3 +16,16 @@ sourcecmebrokerfolder: 'C:\inetpub\wwwroot'
 targetcmebrokerfolder: 'C:\inetpub'
 sourceloaniqfolder: 'C:\LOANIQ'
 targetloaniqfolder: 'C:\'
+
+
+#Variables Misysbrde
+releasmisysbrdefolder: 'C:\Release\FBL_2.2.20'
+targetmisysbrdefolder: 'C:\LOANIQ\Server'
+targetamisysbrdefolder: '\\10.10.12.151\loaniq\Server'
+targetmisysboardnodefolder: '\\10.10.12.151\loaniq\Server\misysboard_node'
+misysbrdesourceeapihost: 'FBLQARAPI'
+misysbrdetargetapihost: 'ENKEFBLDEVAPI'
+misysbrdesourceefblcmeqahost: 'FBLCME-QA'
+misysbrdetargetenkefbldevhost: 'ENKEFBLDEV'
+hostnamesourcemisysbrde: 'FBLQAUXP.develop.fcbt'
+hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'

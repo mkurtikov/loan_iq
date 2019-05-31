@@ -7,55 +7,77 @@
 
 
   tasks:
-  - name: Stop a service
-    win_service:
-      name: TapiSrv
-      state: stopped
+ # - name: Stop a service
+ #   win_service:
+ #     name: TapiSrv
+ #     state: stopped
 
    
   - name: Create directory Release
     win_file:
-      path: C:\Release\FBL_2.2.20
+      path: "{{releasmisysbrdefolder}}"
       state: directory
 
 
   - name: Create directory LOANIQ
     win_file:
-      path: C:\LOANIQ\Server
+      path: "{{targetmisysbrdefolder}}"
       state: directory
 
 
   - name: Copy LOANIQ to Release
     become_method: runas
-    win_shell: copy-item \\10.10.12.151\loaniq\Server  -destination C:\Release\FBL_2.2.20 -recurse
+    win_shell: copy-item "{{targetamisysbrdefolder}}"  -destination "{{releasmisysbrdefolder}}" -recurse
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
    
 
   - name: Copy LOANIQ to target
     become_method: runas
-    win_shell: copy-item \\10.10.12.151\loaniq\Server\misysboard_node  -destination C:\LOANIQ\Server -recurse
+    win_shell: copy-item "{{targetmisysboardnodefolder}}"  -destination "{{targetmisysbrdefolder}}" -recurse
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
 
 
   - name: Change Hostname in mb-package.json
     become_method: runas
-    win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace 'FBLQARAPI','ENKEFBLDEVAPI') | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
+    win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misysbrdesourceeapihost}}","{{misysbrdetargetapihost}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
 
+
+  - name: Change liqserver in mb-package.json
+    become_method: runas
+    win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+  
 
   - name: Change Hostname in config.json
     become_method: runas
     win_shell: |
       $json = Get-Content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json' -raw | ConvertFrom-Json
-      $json.connection | % {if($_.serverName -eq 'FBLQAUXP.develop.fcbt'){$_.serverName='ENKEFBLDEVUXP.develop.fcbt'}}
+      $json.connection | % {if($_.serverName -eq "{{hostnamesourcemisysbrde}}"){$_.serverName="{{hostnametargetmisysbrde}}"}}
       $json | ConvertTo-Json -depth 32| set-content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json'
     become: yes
     become_user: svcEnkeDeployments@develop.fcbt
 
   
+  - name: Change CME
+    become_method: runas
+    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json  
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+ 
+
+  - name: Change FBL
+    become_method: runas
+    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json
+    become: yes
+    become_user: svcEnkeDeployments@develop.fcbt
+
+
+
   - name: Remove subfolders
     become_method: runas
     win_shell: Get-ChildItem -Path C:\loaniq\Server\misysboard_node\data\Users -Recurse| Foreach-object {Remove-item -Recurse -path $_.FullName }
@@ -98,8 +120,8 @@
     vars:
       ansible_become_password: L3tsdanc311!!Ok3
 
-  - name: Start a service
-    win_service:
-      name: TapiSrv
-      state: started
+  #- name: Start a service
+  #  win_service:
+  #    name: TapiSrv
+  #    state: started
 
