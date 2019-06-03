@@ -1,0 +1,6 @@
+- hosts: misysboard
+  gather_facts: false
+  roles:
+    - MISYSBRD
+  vars_files:
+    - "vars/main.yml"
