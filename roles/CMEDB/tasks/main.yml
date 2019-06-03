@@ -2,77 +2,70 @@
   become_method: runas
   win_shell: copy-item "{{sourcecmeappfolder}}" -destination "{{targetcmeappfolder}}" -recurse
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
 
 - name: Copy inetpub to target
   become_method: runas
   win_shell: copy-item "{{sourcecmewebfolder}}" -destination "{{targetcmewebfolder}}" -recurse
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
 
-- name: Change Hostname in Tomcat8.5 server.xml file
+- name: Change Hostname in C:\FBLCME\Tomcat8.5\server.xml file
   become_method: runas
-  win_shell: ((get-content -path C:\FBLCME\Tomcat8.5\conf\server.xml -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  C:\FBLCME\Tomcat8.5\conf\server.xml
+  win_shell: ((get-content -path "{{ Tomcat }}\\conf\\server.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\server.xml"
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
 
-- name: Change Hostname in Tomcat8.5 web.xml file
+- name: Change Hostname in C:\FBLCME\Tomcat8.5\web.xml file
   become_method: runas
-  win_shell: ((get-content -path C:\FBLCME\Tomcat8.5\conf\web.xml -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  C:\FBLCME\Tomcat8.5\conf\web.xml
+  win_shell: ((get-content -path "{{ Tomcat }}\\conf\\web.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\web.xml"
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\logs folder
   win_file:
-    path: C:\FBLCME\Tomcat8.5\conf\logs
+    path: "{{ Tomcat }}\\conf\\logs"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\temp folder
   win_file:
-    path: C:\FBLCME\Tomcat8.5\conf\temp
+    path: "{{ Tomcat }}\\conf\\temp"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\Webapps folder
   win_file:
-    path: C:\FBLCME\Tomcat8.5\conf\Webapps
+    path: "{{ Tomcat }}\\conf\\Webapps"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5-Scheduler-DDT\conf\logs folder
   win_file:
-    path: C:\FBLCME\Tomcat8.5-Scheduler-DDT\conf\logs
+    path: "{{ Tomcat }}-Scheduler-DDT\\conf\\logs"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5-Scheduler-HDE\conf\logs folder
   win_file:
-    path: C:\FBLCME\Tomcat8.5-Scheduler-HDE\conf\logs
+    path: "{{ Tomcat }}-Scheduler-HDE\\conf\\logs"
     state: absent
 
 - name: Create C:\FBLCME share and set permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_share:
     name: FBLCME
-    path: C:\FBLCME
+    path: "{{ FBLCME }}"
     full: Administrators
     read: Everyone
 
 - name: Create C:\FBLCME\Tomcat8.5 share and set permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_share:
-    name: FBLCME Tomcat
-    path: C:\FBLCME\Tomcat8.5
+    name: FBLCME Tomcat 
+    path: "{{ Tomcat }}"
     full: Administrators
     read: Everyone
 
 - name: Set C:\FBLCME folder permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_acl:
-    path: C:\FBLCME
+    path: "{{ FBLCME }}"
     user: Everyone
     rights: ReadAndExecute, ListDirectory
     type: allow
@@ -81,9 +74,8 @@
 - name: Set C:\FBLCME\Tomcat8.5 folder permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_acl:
-    path: C:\FBLCME\Tomcat8.5
+    path: "{{ Tomcat }}"
     user: Everyone
     rights: ReadAndExecute, ListDirectory
     type: allow
@@ -91,23 +83,23 @@
 - name: Set C:\FBLCME folder permissions
   become_method: runas
   become: yes
-  become_user: iyakubenko0519@nterprise.net
   win_acl:
-    path: C:\FBLCME
+    path: "{{ FBLCME }}"
     user: DBA_Admins@nterprise.net
     rights: FullControl
     type: allow
   vars:
-    ansible_become_password: L3tsdanc311!!Ok3
+    ansible_become_user: "{{ cme_admin_user }}"
+    ansible_become_password: "{{ cme_admin_password }}"
 
 - name: Set C:\FBLCME\Tomcat8.5 folder permissions
   become_method: runas
   become: yes
-  become_user: iyakubenko0519@nterprise.net
   win_acl:
-    path: C:\FBLCME\Tomcat8.5
+    path: "{{ Tomcat }}"
     user: DBA_Admins@nterprise.net
     rights: FullControl
     type: allow
   vars:
-    ansible_become_password: L3tsdanc311!!Ok3
+    ansible_become_user: "{{ cme_admin_user }}"
+    ansible_become_password: "{{ cme_admin_password }}"
