@@ -1,4 +1,9 @@
 ---
+  - name: "Check that SQLSERVERAGENT started"
+    win_service:
+      name: "{{ ServiceName }}"
+      state: stopped 
+      
   - name: 'Check that the LOANIQ folder exists'
     win_stat:
       path: 'C:\LOANIQ'
@@ -59,8 +64,12 @@
       state: absent
     with_items:
       - Jackrabbit
-      - liqAPIWebService
       - liq_LinkageMap
+
+  - name: 'Remove directory loaniqwebservice'
+    win_file:
+      path: "C:\\LOANIQ\\SERVER\\Tomcatrestquery\\webapps\\loaniqwebservice"
+      state: absent
 
   - name: 'Encrypt the LS2APP.ini password'
     win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
@@ -100,7 +109,7 @@
 
   - name: 'Set  ACL for folder'
     win_acl:
-      path: C:\LOANIQ
+      path: C:\LOANIQ\Server
       type: allow
       rights: "{{ item.rights }}"
       user: "{{ item.users }}"
@@ -108,3 +117,8 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
+     
+  - name: "Check that SQLSERVERAGENT started"
+    win_service:
+      name: "{{ ServiceName }}"
+      state: started 

@@ -6,7 +6,7 @@
 
 - name: Copy inetpub to target
   become_method: runas
-  win_shell: copy-item "{{targetcmewebfolder}}" -destination "{{targetcmewebfolder}}" -recurse
+  win_shell: copy-item "{{sourcecmewebfolder}}" -destination "{{targetcmewebfolder}}" -recurse
   become: yes
   become_user: svcEnkeDeployments@develop.fcbt
 
