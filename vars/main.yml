@@ -40,8 +40,9 @@ hostnamesourcemisysbrde: 'FBLQAUXP.develop.fcbt'
 hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
-sourcemtappfolder: '\\10.10.12.153\LOANIQ'
+sourcemtappfolder: '\\10.10.12.153\C$\LOANIQ'
 targetmtappfolder: 'C:\'
+LoaniqServiceName: 'STARTLIQ_2020'
 
 #RESTAPI
 MainSourceServer: FBLQARAPI
