@@ -10,6 +10,9 @@ ansible_winrm_server_cert_validation: ignore
 ansible_become_user: "{{ ansible_user }}"
 ansible_become_password: "{{ ansible_password }}"
 
+cme_admin_user: iyakubenko0519@nterprise.net
+cme_admin_password: L3tsdanc311!!Ok3
+
 #General
 LatestRelese: '2.2.13'
 dns_domain_name: develop.fcbt
@@ -37,8 +40,9 @@ hostnamesourcemisysbrde: 'FBLQAUXP.develop.fcbt'
 hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
-sourcemtappfolder: '\\10.10.12.153\LOANIQ'
+sourcemtappfolder: '\\10.10.12.153\C$\LOANIQ'
 targetmtappfolder: 'C:\'
+LoaniqServiceName: 'STARTLIQ_2020'
 
 #RESTAPI
 MainSourceServer: FBLQARAPI
