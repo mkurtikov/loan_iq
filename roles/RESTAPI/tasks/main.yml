@@ -1,4 +1,9 @@
 ---
+  - name: "Check that SQLSERVERAGENT started"
+    win_service:
+      name: "{{ ServiceName }}"
+      state: stopped 
+      
   - name: 'Check that the LOANIQ folder exists'
     win_stat:
       path: 'C:\LOANIQ'
@@ -108,3 +113,8 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
+     
+  - name: "Check that SQLSERVERAGENT started"
+    win_service:
+      name: "{{ ServiceName }}"
+      state: started 
