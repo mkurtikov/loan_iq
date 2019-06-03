@@ -29,3 +29,9 @@ misysbrdesourceefblcmeqahost: 'FBLCME-QA'
 misysbrdetargetenkefbldevhost: 'ENKEFBLDEV'
 hostnamesourcemisysbrde: 'FBLQAUXP.develop.fcbt'
 hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
+
+#Variables MT
+sourcemtappfolder: '\\10.10.12.153\LOANIQ'
+targetmtappfolder: 'C:\'
+LIQPASSWORD: 'LIQPASSWORD'
+
