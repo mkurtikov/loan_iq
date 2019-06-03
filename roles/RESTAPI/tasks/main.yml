@@ -64,7 +64,6 @@
       state: absent
     with_items:
       - Jackrabbit
-      - liqAPIWebService
       - liq_LinkageMap
 
   - name: 'Encrypt the LS2APP.ini password'
@@ -105,7 +104,7 @@
 
   - name: 'Set  ACL for folder'
     win_acl:
-      path: C:\LOANIQ
+      path: C:\LOANIQ\Server
       type: allow
       rights: "{{ item.rights }}"
       user: "{{ item.users }}"
