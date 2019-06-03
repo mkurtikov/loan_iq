@@ -13,6 +13,7 @@ ansible_become_password: "{{ ansible_password }}"
 #General
 LatestRelese: '2.2.13'
 dns_domain_name: develop.fcbt
+LIQPASSWORD: 'LIQPASSWORD'
 
 #Variables
 sourcecmeappfolder: '\\10.10.12.150\FBLCME'
@@ -38,7 +39,6 @@ hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
 #Variables MT
 sourcemtappfolder: '\\10.10.12.153\LOANIQ'
 targetmtappfolder: 'C:\'
-LIQPASSWORD: 'LIQPASSWORD'
 
 #RESTAPI
 MainSourceServer: FBLQARAPI
@@ -53,5 +53,3 @@ SourceMThost: FBLQAMT
 TargetMThost: ENKEFBLDEVMT
 SourceFBLhost: FBLQACME
 TargetFBLhost: ENKEFBLDEVCMEFE
-LIQPASSWORD: LIQPASSWORD
-
