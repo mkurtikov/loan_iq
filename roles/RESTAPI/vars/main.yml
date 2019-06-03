@@ -11,6 +11,8 @@ ansible_winrm_send_cbt: false
 ansible_become_user: "{{ ansible_user }}"
 ansible_become_pass: "{{ ansible_password }}"
 
+ServiceNane: startliq_2020
+
 LatestRelese: '2.2.11'
 SharePath: '\\FBLQARAPI\C$\LOANIQ'
 MainSourceServer: FBLQARAPI
