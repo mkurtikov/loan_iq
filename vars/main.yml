@@ -28,16 +28,15 @@ targetloaniqfolder: 'C:\'
 
 
 #Variables Misysbrde
-ServiceNameMisysboard: 'FBL_Misysboard'
-targetmisysbrdefolder: 'C:\LOANIQ\Server'
-targetamisysbrdefolder: '\\10.10.12.151\loaniq\Server'
-targetmisysboardnodefolder: '\\10.10.12.151\loaniq\Server\misysboard_node'
-misysbrdesourceeapihost: 'FBLQARAPI'
-misysbrdetargetapihost: 'ENKEFBLDEVAPI'
-misysbrdesourceefblcmeqahost: 'FBLCME-QA'
-misysbrdetargetenkefbldevhost: 'ENKEFBLDEV'
-hostnamesourcemisysbrde: 'FBLQAUXP.develop.fcbt'
-hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
+Service_Name_Misys: 'FBL_Misysboard'
+target_misys_folder: 'C:\LOANIQ\Server'
+source_misys_folder: '\\10.10.12.151\loaniq\Server\misysboard_node'
+misys_source_api_host: 'FBLQARAPI'
+misys_target_api_host: 'ENKEFBLDEVAPI'
+misys_source_fblcmeqa_host: 'FBLCME-QA'
+misys_target_enkefbldev_host: 'ENKEFBLDEV'
+host_name_source_misys: 'FBLQAUXP.develop.fcbt'
+host_name_target_misys: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
 sourcemtappfolder: '\\10.10.12.153\C$\LOANIQ'
