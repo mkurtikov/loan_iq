@@ -1,4 +1,10 @@
 ---
+  - name: "Stop  EnkeFblDevRapi service"
+    win_service:
+      name: "{{ ServiceNane }}"
+      start_mode: auto
+      state: started
+      
   - name: 'Check that the LOANIQ folder exists'
     win_stat:
       path: 'C:\LOANIQ'
@@ -108,3 +114,9 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
+     
+   - name: "Start EnkeFblDevRapi service"
+    win_service:
+      name: "{{ ServiceNane }}"
+      start_mode: auto
+      state: started
