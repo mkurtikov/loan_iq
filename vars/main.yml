@@ -1,6 +1,7 @@
 ansible_winrm_transport: ntlm
 ansible_user: DEVELOP\svcEnkeDepolyments
 ansible_password: FarmCreditBank#1
+ansible_become_password: FarmCreditBank#1
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 ansible_port: 5985
