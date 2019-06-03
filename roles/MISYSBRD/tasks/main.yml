@@ -1,9 +1,9 @@
 ---
 
- # - name: Stop a service
- #   win_service:
- #     name: "{{ ServiceNameMisysboard }}"
- #     state: stopped
+  - name: Stop a service
+    win_service:
+      name: "{{ ServiceNameMisysboard }}"
+      state: stopped
 
   
   - name: Check that the LOANIQ folder exists
@@ -118,8 +118,8 @@
      - { rights: 'FullControl', users: DBA_Admins}
     
     
-  #- name: Start a service
-  #  win_service:
-  #    name: "{{ ServiceNameMisysboard }}"
-  #    state: started
+  - name: Start a service
+    win_service:
+      name: "{{ ServiceNameMisysboard }}"
+      state: started
 
