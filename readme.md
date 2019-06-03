@@ -15,4 +15,47 @@ Use this manual https://docs.ansible.com/ansible/latest/user_guide/windows_setup
 Inventory  file should contain dns domain name of VM.
 example:
 ```bash
-{PUT servers here}
+[cmedb]
+ENKEFBLDEVCMEFE.develop.fcbt
+
+[loaniqdb]
+ENKEFBLDEVMT.develop.fcbt
+
+[restapi]
+ENKEFBLDEVRAPI.develop.fcbt
+
+[misysboard]
+ENKEFBLDEVUXP.develop.fcbt
+```
+### Change variables in vars/main.yml
+
+## USAGE
+
+#### Full setup (all roles)
+
+```bash
+ansible-playbook -i inventory all.yml
+```
+
+#### CMEDB
+
+```bash
+ansible-playbook -i inventory  cmedb.yml
+```
+#### LOANIQDB
+
+```bash
+ansible-playbook -i inventory CRM loaniqdb.yml
+```
+
+#### RESTAPI
+
+```bash
+ansible-playbook -i inventory CRM restapi.yml
+```
+
+#### MISYSBOARD
+
+```bash
+ansible-playbook -i inventory misysboard.yml
+```
