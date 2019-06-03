@@ -27,7 +27,6 @@
   become: true
   become_method: runas
   become_flags: logon_type=new_credentials logon_flags=netcredentials_only
-  when: stat_file.stat.exists == True
 
 - name: Copy FBLMT to target
   become_method: runas
@@ -41,7 +40,7 @@
 
 - name: rename in LIQSETENV_FBLQAMT.cmd file
   become_method: runas
-  win_shell: "cmd.exe /c rename C:\\LOANIQ\\SERVER\\LIQSETENV_FBLQAMT.cmd C:\\LOANIQ\\SERVER\\LIQSETENV_ENKEFBLDEVMT.cmd"
+  win_shell: "cmd.exe /c rename C:\\LOANIQ\\SERVER\\LIQSETENV_FBLQAMT.cmd LIQSETENV_ENKEFBLDEVMT.cmd"
   become: yes
 
 - name: Change Hostname in context.xml
@@ -83,7 +82,6 @@
   become_method: runas
   win_shell: ((get-content -path C:\LOANIQ\CLIENT\L2SAPP.ini -Raw) -replace 'fblqamt','enkefbldevmt') | set-content -path  C:\LOANIQ\CLIENT\L2SAPP.ini
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
 
 - name: 'Encrypt the LS2APP.ini password'
   win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
@@ -113,11 +111,9 @@
      - { path: "C:\\LOANIQ\\SERVER\\Tomcat\\conf\\context.xml", sourceline: "password=*.*", targetline: 'password="{{ pwd }}"'}
      - { path: "C:\\LOANIQ\\SERVER\\Tomcat\\jrconf\\jsqlaccessproperties.xml", sourceline: '<entry key="DBDefaultPassword*', targetline: '<entry key="DBDafaultPassword">{{ pwd }}</entry>' }
 
-
 - name: Create C:\LOANIQ\CLIENT share and set permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_share:
     name: CLIENT
     path: C:\LOANIQ\CLIENT
@@ -127,7 +123,6 @@
 - name: Set C:\LOANIQ\CLIENT folder permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_acl:
     path: C:\LOANIQ\CLIENT
     user: Everyone
@@ -138,7 +133,6 @@
 - name: Set C:\LOANIQ\CLIENT folder permissions
   become_method: runas
   become: yes
-  become_user: svcEnkeDeployments@develop.fcbt
   win_acl:
     path: C:\LOANIQ\CLIENT
     user: DBA_Admins@nterprise.net
@@ -150,7 +144,7 @@
   become: yes
   win_acl:
     path: C:\LOANIQ\CLIENT
-    user: Administrators@nterprise.net
+    user: Administrators
     rights: FullControl
     type: allow
 
@@ -187,7 +181,7 @@
   become: yes
   win_acl:
     path: C:\LOANIQ\SERVER
-    user: Administrators@nterprise.net
+    user: Administrators
     rights: FullControl
     type: allow
 
