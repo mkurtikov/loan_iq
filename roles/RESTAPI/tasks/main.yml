@@ -67,6 +67,11 @@
       - liqAPIWebService
       - liq_LinkageMap
 
+  - name: 'Remove directory loaniqwebservice'
+    win_file:
+      path: "C:\\LOANIQ\\SERVER\\Tomcatrestquery\\webapps\\loaniqwebservice"
+      state: absent
+
   - name: 'Encrypt the LS2APP.ini password'
     win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
     args:
