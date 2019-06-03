@@ -1,14 +1,14 @@
 [cmedb]
-FBLTESTCMEFE1.develop.fcbt
+ENKEFBLDEVCMEFE.develop.fcbt
 
 [loaniqdb]
-FBLTESTMT.develop.fcbt
+ENKEFBLDEVMT.develop.fcbt
 
 [restapi]
-FBLTESTRAPI.develop.fcbt
+ENKEFBLDEVRAPI.develop.fcbt
 
 [misysboard]
-FBLTESTUXP.develop.fcbt
+ENKEFBLDEVUXP.develop.fcbt
 
 [RESTAPI]
 ENKEFBLDEVRAPI.develop.fcbt
