@@ -4,4 +4,4 @@
   roles:
     - RESTAPI
   vars_files:
-    - "roles/RESTAPI/vars/main.yml"
+    - "vars/main.yml"
