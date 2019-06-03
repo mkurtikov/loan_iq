@@ -1,7 +1,7 @@
 ---
-- hosts: LIQRestAPI
+- hosts: RESTAPI
   gather_facts: no
   roles:
-    - LIQRestAPI
+    - RESTAPI
   vars_files:
-    - "roles/LIQRestAPI/vars/main.yml"
+    - "roles/RESTAPI/vars/main.yml"
