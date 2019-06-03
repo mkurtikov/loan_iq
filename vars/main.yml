@@ -19,7 +19,7 @@ targetloaniqfolder: 'C:\'
 
 
 #Variables Misysbrde
-releasmisysbrdefolder: 'C:\Release\FBL_2.2.20'
+ServiceNameMisysboard: 'FBL_Misysboard'
 targetmisysbrdefolder: 'C:\LOANIQ\Server'
 targetamisysbrdefolder: '\\10.10.12.151\loaniq\Server'
 targetmisysboardnodefolder: '\\10.10.12.151\loaniq\Server\misysboard_node'
