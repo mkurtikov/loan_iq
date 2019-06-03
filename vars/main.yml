@@ -27,6 +27,13 @@ sourceloaniqfolder: 'C:\LOANIQ'
 targetloaniqfolder: 'C:\'
 
 
+#BackupDB
+InstanceMSSQL: ENKEFBLDEVBE
+Database: FBLCME
+BackupPath: D:\SQLBackup
+
+
+
 #Variables Misysbrde
 Service_Name_Misys: 'FBL_Misysboard'
 target_misys_folder: 'C:\LOANIQ\Server'
