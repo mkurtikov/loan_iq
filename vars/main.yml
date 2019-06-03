@@ -46,6 +46,7 @@ MainTargetServer: ENKEFBLDEVRAPI
 
 SharePath: '\\{{ MainSourceServer }}\C$\LOANIQ'
 
+ServiceName: startliq_2020
 SourceBEhost: 'FBLQABE'
 TargetBEhost: 'ENKEFBLDEVBE'
 SourceMThost: FBLQAMT
