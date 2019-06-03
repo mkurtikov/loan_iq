@@ -1,16 +1,13 @@
 ---
-
   - name: Stop a service
     win_service:
       name: "{{ ServiceNameMisysboard }}"
       state: stopped
 
-  
   - name: Check that the LOANIQ folder exists
     win_stat:
       path: 'C:\LOANIQ'
     register: stat_file
-
 
   - name: Ensure Release folder exist
     win_file:
@@ -18,13 +15,11 @@
       state: directory
     when: stat_file.stat.exists == True
 
-
   - name: Ensure FBL folder exist
     win_file:
       path: "C:\\Releases\\FBL_{{ LatestRelese }}"
       state: directory
     when: stat_file.stat.exists == True
-
 
   - name: Quick Backup to Release folder
     win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ LatestRelese }}"
@@ -33,30 +28,25 @@
     become_flags: logon_type=new_credentials logon_flags=netcredentials_only
     when: stat_file.stat.exists == True
 
-
   - name: Create directory LOANIQ
     win_file:
       path: "{{targetmisysbrdefolder}}"
       state: directory
 
-   
   - name: Copy LOANIQ to target
     become_method: runas
     win_shell: copy-item "{{targetmisysboardnodefolder}}"  -destination "{{targetmisysbrdefolder}}" -recurse
     become: true
-    
 
   - name: Change Hostname in mb-package.json
     become_method: runas
     win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misysbrdesourceeapihost}}","{{misysbrdetargetapihost}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
     become: true
-    
 
   - name: Change liqserver in mb-package.json
     become_method: runas
     win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
     become: true
-    
 
   - name: Change Hostname in config.json
     become_method: runas
@@ -65,25 +55,21 @@
       $json.connection | % {if($_.serverName -eq "{{hostnamesourcemisysbrde}}"){$_.serverName="{{hostnametargetmisysbrde}}"}}
       $json | ConvertTo-Json -depth 32| set-content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json'
     become: true
-    
-  
+
   - name: Change CME
     become_method: runas
-    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json  
+    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json
     become: true
-    
 
   - name: Change FBL
     become_method: runas
     win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misysbrdesourceefblcmeqahost}}","{{misysbrdetargetenkefbldevhost}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json
     become: true
 
-
   - name: Remove subfolders
     become_method: runas
     win_shell: Get-ChildItem -Path C:\loaniq\Server\misysboard_node\data\Users -Recurse| Foreach-object {Remove-item -Recurse -path $_.FullName }
     become: true
-    
 
   - name: Share and set permissions C:\LOANIQ
     become_method: runas
@@ -94,17 +80,15 @@
       full: Administrators
       read: Everyone
 
-
   - name: Set C:\LOANIQ  folder permissions
     become_method: runas
-    become: true 
+    become: true
     win_acl:
       path: C:\LOANIQ
       user: Everyone
       rights: ReadAndExecute, ListDirectory
       type: allow
       propagation: 'None'
-
 
   - name: Set C:\LOANIQ folder permissions
     win_acl:
@@ -116,10 +100,8 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
-    
-    
+
   - name: Start a service
     win_service:
       name: "{{ ServiceNameMisysboard }}"
       state: started
-
