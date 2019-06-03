@@ -1,14 +1,19 @@
+#Connection
 ansible_winrm_transport: ntlm
-ansible_user: DEVELOP\svcEnkeDepolyments
+ansible_user: DEVELOP\svcEnkeDeployments
 ansible_password: FarmCreditBank#1
-ansible_become_password: FarmCreditBank#1
 ansible_connection: winrm
-ansible_winrm_server_cert_validation: ignore
 ansible_port: 5985
 ansible_winrm_send_cbt: false
-domain_admin_user: svcEnkeDepolyments@develop.fcbt
-domain_admin_password: FarmCreditBank#1
+ansible_winrm_server_cert_validation: ignore
+
+ansible_become_user: "{{ ansible_user }}"
+ansible_become_password: "{{ ansible_password }}"
+
+#General
+LatestRelese: '2.2.13'
 dns_domain_name: develop.fcbt
+LIQPASSWORD: 'LIQPASSWORD'
 
 #Variables
 sourcecmeappfolder: '\\10.10.12.150\FBLCME'
@@ -34,5 +39,17 @@ hostnametargetmisysbrde: 'ENKEFBLDEVUXP.develop.fcbt'
 #Variables MT
 sourcemtappfolder: '\\10.10.12.153\LOANIQ'
 targetmtappfolder: 'C:\'
-LIQPASSWORD: 'LIQPASSWORD'
 
+#RESTAPI
+MainSourceServer: FBLQARAPI
+MainTargetServer: ENKEFBLDEVRAPI
+
+SharePath: '\\{{ MainSourceServer }}\C$\LOANIQ'
+
+ServiceName: startliq_2020
+SourceBEhost: 'FBLQABE'
+TargetBEhost: 'ENKEFBLDEVBE'
+SourceMThost: FBLQAMT
+TargetMThost: ENKEFBLDEVMT
+SourceFBLhost: FBLQACME
+TargetFBLhost: ENKEFBLDEVCMEFE
