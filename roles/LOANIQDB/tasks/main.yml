@@ -186,13 +186,9 @@
     type: allow
 
 - name: ms sql fbloaniq backup
-  win_psexec:
-    command: Backup-SqlDatabase -ServerInstance "{{InstanceMSSQL}}" -Database "{{loaniq_db_catalog}}" -BackupFile "{{BackupPath}}"\FBLOANIQ_preUG777.bak
-    hostnames:
-    - "{{InstanceMSSQL}}"
-    username: "{{ansible_user}}"
-    password: "{{ansible_password}}"
-    priority: high
+  become_method: runas
+  become: yes
+  win_shell: Invoke-Command -ComputerName {{InstanceMSSQL}} -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{InstanceMSSQL}}" -Database "{{loaniq_db_catalog}}" -BackupFile "{{BackupPath}}\\FBLOANIQ_preUG{{lookup('pipe', 'date +%m_%d_%Y_%H%M%S')}}.bak"}
 
 - name: Check that loaniq service started
   become_method: runas
