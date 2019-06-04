@@ -46,9 +46,10 @@ host_name_source_misys: 'FBLQAUXP.develop.fcbt'
 host_name_target_misys: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
-sourcemtappfolder: '\\10.10.12.153\C$\LOANIQ'
-targetmtappfolder: 'C:\'
-LoaniqServiceName: 'STARTLIQ_2020'
+source_mt_app_folder: '\\10.10.12.153\C$\LOANIQ'
+target_mt_app_folder: 'C:\'
+loaniq_service_name: 'STARTLIQ_2020'
+loaniq_db_catalog: 'FBLoanIQ'
 
 #RESTAPI
 MainSourceServer: FBLQARAPI

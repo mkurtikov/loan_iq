@@ -2,7 +2,7 @@
   become_method: runas
   become: yes
   win_service:
-    name: "{{ LoaniqServiceName }}"
+    name: "{{ loaniq_service_name }}"
     state: stopped 
 
 - name: 'Check that the LOANIQ folder exists'
@@ -30,7 +30,7 @@
 
 - name: Copy FBLMT to target
   become_method: runas
-  win_shell: copy-item "{{sourcemtappfolder}}" -destination "{{targetmtappfolder}}" -recurse
+  win_shell: copy-item "{{source_mt_app_folder}}" -destination "{{target_mt_app_folder}}" -recurse
   become: yes
 
 - name: Change Hostname in server l2sapp.ini file
@@ -185,9 +185,18 @@
     rights: FullControl
     type: allow
 
+- name: ms sql fbloaniq backup
+  win_psexec:
+    command: Backup-SqlDatabase -ServerInstance "{{InstanceMSSQL}}" -Database "{{loaniq_db_catalog}}" -BackupFile "{{BackupPath}}"\FBLOANIQ_preUG777.bak
+    hostnames:
+    - "{{InstanceMSSQL}}"
+    username: "{{ansible_user}}"
+    password: "{{ansible_password}}"
+    priority: high
+
 - name: Check that loaniq service started
   become_method: runas
   become: yes
   win_service:
-    name: "{{ LoaniqServiceName }}"
+    name: "{{ loaniq_service_name }}"
     state: started 
