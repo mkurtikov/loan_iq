@@ -103,3 +103,9 @@
   vars:
     ansible_become_user: "{{ cme_admin_user }}"
     ansible_become_password: "{{ cme_admin_password }}"
+
+- name: Create FBCME database backup
+  become_method: runas
+  become: true
+  win_shell:
+       Invoke-Command -ComputerName "{{ InstanceMSSQL }}" -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{ InstanceMSSQL }}" -Database "{{ Database }}" -BackupFile "{{ BackupPath }}\\FBCME_preUG_$(get-date -f MM-dd-yyyy).bak"}
