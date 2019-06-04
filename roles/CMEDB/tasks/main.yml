@@ -1,3 +1,27 @@
+- name: 'Check that the FBLCME folder exists'
+  win_file:
+    path: 'C:\FBLCME'
+  register: stat_file
+
+- name: 'Ensure Release folder exist'
+  win_file:
+    path: 'C:\Releases'
+    state: directory
+  when: stat_file.stat.exists == True
+
+- name: 'Ensure FBL folder exist'
+  win_file:
+    path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+    state: directory
+  when: stat_file.stat.exists == True
+
+- name: 'Quick Backup to Release folder'
+  win_shell: "mv C:\\FBLCME C:\\Releases\\FBL_{{ LatestRelese }}"
+  become: true
+  become_method: runas
+  become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  when: stat_file.stat.exists == True
+    
 - name: Copy FBLCME to target
   become_method: runas
   win_shell: copy-item "{{sourcecmeappfolder}}" -destination "{{targetcmeappfolder}}" -recurse
