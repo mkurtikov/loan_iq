@@ -1,0 +1,6 @@
+- hosts: mongo
+  gather_facts: false
+  roles:
+    - MONGO
+  vars_files:
+    - "vars/main.yml"
