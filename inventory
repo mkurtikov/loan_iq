@@ -10,5 +10,5 @@ ENKEFBLDEVRAPI.develop.fcbt
 [misysboard]
 ENKEFBLDEVUXP.develop.fcbt
 
-[db]
+[mongo]
 ENKEFBLDEVBE.develop.fcbt
