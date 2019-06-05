@@ -8,7 +8,7 @@
 - name: 'Check that the LOANIQ folder exists'
   win_stat:
     path: 'C:\LOANIQ'
-    register: stat_file
+  register: stat_file
 
 - name: 'Ensure Release folder exist'
   win_file:
@@ -27,6 +27,7 @@
   become: true
   become_method: runas
   become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+  when: stat_file.stat.exists == True
 
 - name: Copy FBLMT to target
   become_method: runas
