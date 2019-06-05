@@ -10,5 +10,5 @@ ENKEFBLDEVRAPI.develop.fcbt
 [misysboard]
 ENKEFBLDEVUXP.develop.fcbt
 
-[RESTAPI]
-ENKEFBLDEVRAPI.develop.fcbt
+[db]
+ENKEFBLDEVBE.develop.fcbt
