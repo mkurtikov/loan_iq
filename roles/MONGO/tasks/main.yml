@@ -1,0 +1,12 @@
+- name: Copy script file to DB host
+  win_copy:
+    src: /home/ansible/loan_iq-master/roles/MONGO/files/script.js
+    dest: "{{ MongoFolder }}\\script.js"
+
+- name: Change host url
+  become_method: runas
+  become: true
+  win_shell: mongo localhost:27017/monDev script.js
+  args:
+    executable: cmd
+    chdir: "{{ MongoFolder }}"
