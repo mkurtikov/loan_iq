@@ -27,7 +27,7 @@
     username: LocalSystem
 
 - name: 'Check that the FBLCME folder exists'
-  win_file:
+  win_stat:
     path: 'C:\FBLCME'
   register: stat_file
 
