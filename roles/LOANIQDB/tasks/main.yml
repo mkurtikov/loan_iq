@@ -16,12 +16,6 @@
     state: directory
     when: stat_file.stat.exists == True
 
-- name: 'Ensure FBL folder exist'
-  win_file:
-    path: "C:\\Releases\\FBL_{{ latest_relese }}"
-    state: directory
-    when: stat_file.stat.exists == True
-
 - name: 'Quick Backup to Release folder'
   win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}_{{lookup('pipe', 'date +%m%d%Y%H%M%S')}}" 
   become: true
