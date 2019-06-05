@@ -22,6 +22,7 @@ cme_target_web_folder: 'C:\'
 cme_db_catalog: FBLCME
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
+MongoFolder: C:\Program Files\MongoDB\Server\4.0\bin
 
 #BackupDB
 mssql_db_instance: ENKEFBLDEVBE
