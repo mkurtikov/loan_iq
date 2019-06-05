@@ -1,9 +1,9 @@
 ---
   - name: "Check that SQLSERVERAGENT started"
     win_service:
-      name: "{{ ServiceName }}"
-      state: stopped 
-      
+      name: "{{ rest_api_service_name }}"
+      state: stopped
+
   - name: 'Check that the LOANIQ folder exists'
     win_stat:
       path: 'C:\LOANIQ'
@@ -17,34 +17,34 @@
 
   - name: 'Ensure FBL folder exist'
     win_file:
-      path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+      path: "C:\\Releases\\FBL_{{ latest_relese }}"
       state: directory
     when: stat_file.stat.exists == True
 
   - name: 'Quick Backup to Release folder'
-    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ LatestRelese }}"
+    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}"
     become: true
     become_method: runas
     become_flags: logon_type=new_credentials logon_flags=netcredentials_only
     when: stat_file.stat.exists == True
 
-  - name: 'Copy folder from  {{ SharePath }}'
-    win_shell: "Copy-Item -Path {{ SharePath}}* -Destination C:\\ -recurse -Force"
+  - name: 'Copy folder from  {{ rest_api_share_path }}'
+    win_shell: "Copy-Item -Path {{ rest_api_share_path }}* -Destination C:\\ -recurse -Force"
     become: true
     become_method: runas
     become_flags: logon_type=new_credentials logon_flags=netcredentials_only
 
-  - name: 'Rename LIQSETENV_{{ MainSourceServer }}.cmd'
-    win_shell: "mv C:\\LOANIQ\\SERVER\\LIQSETENV_{{ MainSourceServer }}.cmd C:\\LOANIQ\\SERVER\\LIQSETENV_{{ MainTargetServer }}.cmd"
+  - name: 'Rename LIQSETENV_{{ rest_api_main_source_server }}.cmd'
+    win_shell: "mv C:\\LOANIQ\\SERVER\\LIQSETENV_{{ rest_api_main_source_server }}.cmd C:\\LOANIQ\\SERVER\\LIQSETENV_{{ rest_api_main_target_server }}.cmd"
 
   - name: 'Replace string'
     win_shell: (get-content {{ item.path }}) | foreach-object {$_ -replace "{{ item.sourceline }}", "{{ item.targetline }}"} | set-content {{ item.path }}
     with_items:
-      - { path: 'C:\LOANIQ\SERVER\LS2APP.ini', sourceline: "{{ SourceMThost }}", targetline: "{{ TargetMThost}}" }
-      - { path: 'C:\LOANIQ\SERVER\Tomcat\conf\context.xml', sourceline: "{{ SourceBEhost }}", targetline: "{{ TargetBEhost}}" }
-      - { path: 'C:\LOANIQ\SERVER\Tomcat\jrconf\jsqlaccessproperties.xml', sourceline: "{{ SourceBEhost }}", targetline: "{{ TargetBEhost}}" }
-      - { path: 'C:\LOANIQ\SERVER\Tomcatrest\LS2APP.ini', sourceline: "{{ SourceFBLhost }}", targetline: "{{ TargetFBLhost}}" }
-      - { path: 'C:\LOANIQ\SERVER\Tomcatrestquery\LS2APP.ini', sourceline: "{{ SourceFBLhost }}", targetline: "{{ TargetFBLhost}}" }
+      - { path: 'C:\LOANIQ\SERVER\LS2APP.ini', sourceline: "{{ rest_api_source_MT_host }}", targetline: "{{ rest_api_target_MT_host }}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcat\conf\context.xml', sourceline: "{{ rest_api_source_BE_host }}", targetline: "{{ rest_api_target_BE_host }}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcat\jrconf\jsqlaccessproperties.xml', sourceline: "{{ rest_api_source_BE_host }}", targetline: "{{ rest_api_target_BE_host }}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcatrest\LS2APP.ini', sourceline: "{{ rest_api_source_FB_Lhost }}", targetline: "{{ rest_api_target_FBL_host}}" }
+      - { path: 'C:\LOANIQ\SERVER\Tomcatrestquery\LS2APP.ini', sourceline: "{{ rest_api_source_FB_Lhost }}", targetline: "{{ rest_api_target_FBL_host}}" }
 
   - name: 'Delete folder content'
     win_shell: 'Remove-Item –path {{ item }}* -include *.*'
@@ -72,7 +72,7 @@
       state: absent
 
   - name: 'Encrypt the LS2APP.ini password'
-    win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
+    win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ ecnryption_password }} -ini LS2APP.INI > pwd.out"
     args:
       chdir: C:\LOANIQ\SERVER\
       executable: cmd
@@ -82,7 +82,7 @@
     args:
       chdir: C:\LOANIQ\SERVER\
       executable: cmd
-      stdin: "{{ LIQPASSWORD }}"
+      stdin: "{{ ecnryption_password }}"
     register: EncrypredPassword
 
   - set_fact: pwd="{{ EncrypredPassword.stdout | trim }}"
@@ -117,8 +117,8 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
-     
+
   - name: "Check that SQLSERVERAGENT started"
     win_service:
-      name: "{{ ServiceName }}"
-      state: started 
+      name: "{{ rest_api_service_name }}"
+      state: started

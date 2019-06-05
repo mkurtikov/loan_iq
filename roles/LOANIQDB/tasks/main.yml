@@ -3,7 +3,7 @@
   become: yes
   win_service:
     name: "{{ loaniq_service_name }}"
-    state: stopped 
+    state: stopped
 
 - name: 'Check that the LOANIQ folder exists'
   win_stat:
@@ -18,19 +18,19 @@
 
 - name: 'Ensure FBL folder exist'
   win_file:
-    path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+    path: "C:\\Releases\\FBL_{{ latest_relese }}"
     state: directory
     when: stat_file.stat.exists == True
 
 - name: 'Quick Backup to Release folder'
-  win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ LatestRelese }}"
+  win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}"
   become: true
   become_method: runas
   become_flags: logon_type=new_credentials logon_flags=netcredentials_only
 
 - name: Copy FBLMT to target
   become_method: runas
-  win_shell: copy-item "{{source_mt_app_folder}}" -destination "{{target_mt_app_folder}}" -recurse
+  win_shell: copy-item "{{ loaniq_source_app_folder }}" -destination "{{ loaniq_target_app_folder }}" -recurse
   become: yes
 
 - name: Change Hostname in server l2sapp.ini file
@@ -84,7 +84,7 @@
   become: yes
 
 - name: 'Encrypt the LS2APP.ini password'
-  win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ LIQPASSWORD }} -ini LS2APP.INI > pwd.out"
+  win_shell: "LS2UTIL -util ENCR_PASS -pwd {{ ecnryption_password }} -ini LS2APP.INI > pwd.out"
   args:
     chdir: C:\LOANIQ\SERVER\
     executable: cmd
@@ -94,7 +94,7 @@
   args:
     chdir: C:\LOANIQ\SERVER\
     executable: cmd
-    stdin: "{{ LIQPASSWORD }}"
+    stdin: "{{ ecnryption_password }}"
   register: EncrypredPassword
 
 - set_fact: pwd="{{ EncrypredPassword.stdout | trim }}"
@@ -188,11 +188,11 @@
 - name: ms sql fbloaniq backup
   become_method: runas
   become: yes
-  win_shell: Invoke-Command -ComputerName {{InstanceMSSQL}} -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{InstanceMSSQL}}" -Database "{{loaniq_db_catalog}}" -BackupFile "{{BackupPath}}\\FBLOANIQ_preUG{{lookup('pipe', 'date +%m_%d_%Y_%H%M%S')}}.bak"}
+  win_shell: Invoke-Command -ComputerName {{ mssql_db_instance }} -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{ mssql_db_instance }}" -Database "{{loaniq_db_catalog}}" -BackupFile "{{ db_backup_path }}\\FBLOANIQ_preUG{{lookup('pipe', 'date +%m_%d_%Y_%H%M%S')}}.bak"}
 
 - name: Check that loaniq service started
   become_method: runas
   become: yes
   win_service:
     name: "{{ loaniq_service_name }}"
-    state: started 
+    state: started

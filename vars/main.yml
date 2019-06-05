@@ -6,61 +6,52 @@ ansible_connection: winrm
 ansible_port: 5985
 ansible_winrm_send_cbt: false
 ansible_winrm_server_cert_validation: ignore
-
 ansible_become_user: "{{ ansible_user }}"
 ansible_become_password: "{{ ansible_password }}"
 
+#General
+latest_relese: '2.2.13'
+dns_domain_name: develop.fcbt
+ecnryption_password: 'LIQPASSWORD'
+
+#CME
+cme_source_app_folder: '\\10.10.12.150\FBLCME'
+cme_source_web_folder: '\\10.10.12.150\c$\inetpub'
+cme_target_app_folder: 'C:\'
+cme_target_web_folder: 'C:\'
+cme_db_catalog: FBLCME
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
 
-#General
-LatestRelese: '2.2.13'
-dns_domain_name: develop.fcbt
-LIQPASSWORD: 'LIQPASSWORD'
-
-#Variables
-sourcecmeappfolder: '\\10.10.12.150\FBLCME'
-sourcecmewebfolder: '\\10.10.12.150\c$\inetpub'
-targetcmeappfolder: 'C:\'
-targetcmewebfolder: 'C:\'
-sourceloaniqfolder: 'C:\LOANIQ'
-targetloaniqfolder: 'C:\'
-
-
 #BackupDB
-InstanceMSSQL: ENKEFBLDEVBE
-Database: FBLCME
-BackupPath: D:\SQLBackup
-
-
+mssql_db_instance: ENKEFBLDEVBE
+db_backup_path: D:\SQLBackup
 
 #Variables Misysbrde
-Service_Name_Misys: 'FBL_Misysboard'
-target_misys_folder: 'C:\LOANIQ\Server'
-source_misys_folder: '\\10.10.12.151\loaniq\Server\misysboard_node'
+misys_service_name: 'FBL_Misysboard'
+misys_target_folder: 'C:\LOANIQ\Server'
+misys_source_folder: '\\10.10.12.151\loaniq\Server\misysboard_node'
 misys_source_api_host: 'FBLQARAPI'
 misys_target_api_host: 'ENKEFBLDEVAPI'
 misys_source_fblcmeqa_host: 'FBLCME-QA'
 misys_target_enkefbldev_host: 'ENKEFBLDEV'
-host_name_source_misys: 'FBLQAUXP.develop.fcbt'
-host_name_target_misys: 'ENKEFBLDEVUXP.develop.fcbt'
+misys_host_name_source: 'FBLQAUXP.develop.fcbt'
+misys_host_name_target: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
-source_mt_app_folder: '\\10.10.12.153\C$\LOANIQ'
-target_mt_app_folder: 'C:\'
+loaniq_source_app_folder: '\\10.10.12.153\C$\LOANIQ'
+loaniq_target_app_folder: 'C:\'
 loaniq_service_name: 'STARTLIQ_2020'
 loaniq_db_catalog: 'FBLoanIQ'
 
 #RESTAPI
-MainSourceServer: FBLQARAPI
-MainTargetServer: ENKEFBLDEVRAPI
-
-SharePath: '\\{{ MainSourceServer }}\C$\LOANIQ'
-
-ServiceName: startliq_2020
-SourceBEhost: 'FBLQABE'
-TargetBEhost: 'ENKEFBLDEVBE'
-SourceMThost: FBLQAMT
-TargetMThost: ENKEFBLDEVMT
-SourceFBLhost: FBLQACME
-TargetFBLhost: ENKEFBLDEVCMEFE
+rest_api_main_source_server: FBLQARAPI
+rest_api_main_target_server: ENKEFBLDEVRAPI
+rest_api_share_path: '\\{{ rest_api_main_source_server }}\C$\LOANIQ'
+rest_api_service_name: startliq_2020
+rest_api_source_BE_host: 'FBLQABE'
+rest_api_target_BE_host: 'ENKEFBLDEVBE'
+rest_api_source_MT_host: FBLQAMT
+rest_api_target_MT_host: ENKEFBLDEVMT
+rest_api_source_FB_Lhost: FBLQACME
+rest_api_target_FBL_host: ENKEFBLDEVCMEFE

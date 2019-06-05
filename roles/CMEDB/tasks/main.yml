@@ -39,25 +39,25 @@
 
 - name: 'Ensure FBL folder exist'
   win_file:
-    path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+    path: "C:\\Releases\\FBL_{{ latest_relese }}"
     state: directory
   when: stat_file.stat.exists == True
 
 - name: 'Quick Backup to Release folder'
-  win_shell: "mv C:\\FBLCME C:\\Releases\\FBL_{{ LatestRelese }}"
+  win_shell: "mv C:\\FBLCME C:\\Releases\\FBL_{{ latest_relese }}"
   become: true
   become_method: runas
   become_flags: logon_type=new_credentials logon_flags=netcredentials_only
   when: stat_file.stat.exists == True
-    
+
 - name: Copy FBLCME to target
   become_method: runas
-  win_shell: copy-item "{{sourcecmeappfolder}}" -destination "{{targetcmeappfolder}}" -recurse
+  win_shell: copy-item "{{cme_source_app_folder}}" -destination "{{cme_target_app_folder}}" -recurse
   become: yes
 
 - name: Copy inetpub to target
   become_method: runas
-  win_shell: copy-item "{{sourcecmewebfolder}}" -destination "{{targetcmewebfolder}}" -recurse
+  win_shell: copy-item "{{cme_source_web_folder}}" -destination "{{cme_target_web_folder}}" -recurse
   become: yes
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\server.xml file
@@ -108,7 +108,7 @@
   become_method: runas
   become: yes
   win_share:
-    name: FBLCME Tomcat 
+    name: FBLCME Tomcat
     path: "{{ Tomcat }}"
     full: Administrators
     read: Everyone
@@ -160,8 +160,8 @@
   become_method: runas
   become: true
   win_shell:
-       Invoke-Command -ComputerName "{{ InstanceMSSQL }}" -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{ InstanceMSSQL }}" -Database "{{ Database }}" -BackupFile "{{ BackupPath }}\\FBCME_preUG_$(get-date -f MM-dd-yyyy).bak"}
-       
+    Invoke-Command -ComputerName "{{ mssql_db_instance }}" -ScriptBlock {Backup-SqlDatabase -ServerInstance "{{ mssql_db_instance }}" -Database "{{ cme_db_catalog }}" -BackupFile "{{ db_backup_path }}\\FBCME_preUG_${{lookup('pipe', 'date +%m_%d_%Y_%H%M%S')}}.bak"}
+
 - name: Start FBLCME-MongoDB service
   win_service:
     name: FBLCME-MongoDB

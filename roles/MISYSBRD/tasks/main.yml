@@ -2,7 +2,7 @@
 
   - name: Stop a service
     win_service:
-      name: "{{ Service_Name_Misys }}"
+      name: "{{ misys_service_name }}"
       state: stopped
 
   - name: Check that the LOANIQ folder exists
@@ -18,12 +18,12 @@
 
   - name: Ensure FBL folder exist
     win_file:
-      path: "C:\\Releases\\FBL_{{ LatestRelese }}"
+      path: "C:\\Releases\\FBL_{{ latest_relese }}"
       state: directory
     when: stat_file.stat.exists == True
 
   - name: Quick Backup to Release folder
-    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ LatestRelese }}"
+    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}"
     become: true
     become_method: runas
     become_flags: logon_type=new_credentials logon_flags=netcredentials_only
@@ -31,37 +31,37 @@
 
   - name: Create directory LOANIQ
     win_file:
-      path: "{{target_misys_folder}}"
+      path: "{{misys_target_folder}}"
       state: directory
-   
+
   - name: Copy LOANIQ to target
     become_method: runas
-    win_shell: copy-item "{{source_misys_folder}}"  -destination "{{target_misys_folder}}" -recurse
+    win_shell: copy-item "{{ misys_source_folder }}"  -destination "{{ misys_target_folder }}" -recurse
     become: true
-    
+
   - name: Change Hostname in mb-package.json
     become_method: runas
     win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misys_source_api_host}}","{{misys_target_api_host}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
     become: true
-    
+
   - name: Change liqserver in mb-package.json
     become_method: runas
     win_shell: ((get-content -path C:\loaniq\Server\misysboard_node\mb-package.json -Raw) -replace "{{misys_source_fblcmeqa_host}}","{{misys_target_enkefbldev_host}}") | set-content -path  C:\loaniq\Server\misysboard_node\mb-package.json
     become: true
-    
+
   - name: Change Hostname in config.json
     become_method: runas
     win_shell: |
       $json = Get-Content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json' -raw | ConvertFrom-Json
-      $json.connection | % {if($_.serverName -eq "{{host_name_source_misys}}"){$_.serverName="{{host_name_target_misys}}"}}
+      $json.connection | % {if($_.serverName -eq "{{ misys_host_name_source }}"){$_.serverName="{{ misys_host_name_target }}"}}
       $json | ConvertTo-Json -depth 32| set-content 'C:\loaniq\Server\misysboard_node\addons\fbl_common\config\generated\config.json'
     become: true
-      
+
   - name: Change CME
     become_method: runas
-    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misys_source_fblcmeqa_host}}","{{misys_target_enkefbldev_host}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json  
+    win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misys_source_fblcmeqa_host}}","{{misys_target_enkefbldev_host}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\CME\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json
     become: true
-    
+
   - name: Change FBL
     become_method: runas
     win_shell: ((get-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json -Raw) -replace "{{misys_source_fblcmeqa_host}}","{{misys_target_enkefbldev_host}}") | set-content -path C:\LOANIQ\Server\misysboard_node\model\FBL\workspaces\3c5fe6cc-e20a-445f-b9ea-54fcfc7729ab\components\b2c94273-659f-441f-86b3-7fc460a184b7.json
@@ -71,7 +71,7 @@
     become_method: runas
     win_shell: Get-ChildItem -Path C:\loaniq\Server\misysboard_node\data\Users -Recurse| Foreach-object {Remove-item -Recurse -path $_.FullName }
     become: true
-    
+
   - name: Share and set permissions C:\LOANIQ
     become_method: runas
     become: true
@@ -83,7 +83,7 @@
 
   - name: Set C:\LOANIQ  folder permissions
     become_method: runas
-    become: true 
+    become: true
     win_acl:
       path: C:\LOANIQ
       user: Everyone
@@ -101,9 +101,9 @@
      - { rights: 'ReadAndExecute,ListDirectory', users: Everyone}
      - { rights: 'FullControl', users: Administrators}
      - { rights: 'FullControl', users: DBA_Admins}
-        
+
   - name: Start a service
     win_service:
-      name: "{{ Service_Name_Misys }}"
+      name: "{{ misys_service_name }}"
       state: started
 
