@@ -6,7 +6,7 @@
 - name: Change host url
   become_method: runas
   become: true
-  win_shell: mongo "{{ Scriptpath }}" script.js
+  win_shell: mongo {{ Scriptpath }} script.js
   args:
     executable: cmd
     chdir: "{{ MongoFolder }}"
