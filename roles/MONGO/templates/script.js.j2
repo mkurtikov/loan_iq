@@ -1,0 +1,5 @@
+db.getCollection('documents')
+.find({"url": /{{ sourceurl }}/})
+.forEach(function(e,i) {e.url=e.url.replace("{{ sourceurl }}", "{{ targeturl }}");
+db.getCollection('documents').save(e);
+});
