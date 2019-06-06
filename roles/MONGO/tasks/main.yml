@@ -1,6 +1,6 @@
 - name: Copy script file to DB host
   win_copy:
-    src: "{{ Scriptsource }}"/script.js
+    src: "{{ Scriptsource }}/script.js"
     dest: "{{ MongoFolder }}\\script.js"
 
 - name: Change host url
