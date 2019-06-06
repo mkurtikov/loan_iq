@@ -52,12 +52,12 @@
 
 - name: Copy FBLCME to target
   become_method: runas
-  win_shell: copy-item "{{cme_source_app_folder}}" -destination "{{cme_target_app_folder}}" -recurse
+  win_shell: copy-item "{{cme_source_app_folder}}" -destination "{{cme_target_app_folder}}" -recurse -ErrorAction SilentlyContinue
   become: yes
 
 - name: Copy inetpub to target
   become_method: runas
-  win_shell: copy-item "{{cme_source_web_folder}}" -destination "{{cme_target_web_folder}}" -recurse
+  win_shell: copy-item "{{cme_source_web_folder}}" -destination "{{cme_target_web_folder}}" -recurse -ErrorAction SilentlyContinue
   become: yes
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\server.xml file
