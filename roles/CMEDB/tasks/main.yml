@@ -64,12 +64,12 @@
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\server.xml file
   become_method: runas
-  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\server.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\server.xml"
+  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\server.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ cme_tomcat_folder }}\\conf\\server.xml"
   become: yes
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\web.xml file
   become_method: runas
-  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\web.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\web.xml"
+  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\web.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ cme_tomcat_folder }}\\conf\\web.xml"
   become: yes
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\logs folder
