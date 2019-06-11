@@ -1,0 +1,6 @@
+- name: Start Server service
+  win_service:
+    name: LanmanServer
+    state: started
+    start_mode: delayed
+    username: LocalSystem

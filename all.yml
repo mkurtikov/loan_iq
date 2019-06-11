@@ -1,4 +1,11 @@
 ---
+- hosts: stopbe
+  gather_facts: true
+  roles:
+    - STOPBE
+  vars_files:
+    - "vars/main.yml"
+
 - hosts: cmedb
   gather_facts: true
   roles:
@@ -27,3 +34,9 @@
   vars_files:
     - "vars/main.yml"
 
+- hosts: startbe
+  gather_facts: true
+  roles:
+    - STARTBE
+  vars_files:
+    - "vars/main.yml"

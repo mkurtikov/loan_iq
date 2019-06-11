@@ -12,3 +12,9 @@ ENKEFBLDEVUXP.develop.fcbt
 
 [mongo]
 ENKEFBLDEVCMEFE.develop.fcbt
+
+[stopbe]
+ENKEFBLDEVBE1.develop.fcbt
+
+[startbe]
+ENKEFBLDEVBE1.develop.fcbt

@@ -1,0 +1,6 @@
+- name: Stop Server service
+  win_service:
+    name: LanmanServer
+    state: stopped
+    start_mode: manual
+    username: LocalSystem

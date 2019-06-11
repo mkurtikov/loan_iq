@@ -1,0 +1,7 @@
+---
+- hosts: startbe
+  gather_facts: no
+  roles:
+    - STARTBE
+  vars_files:
+    - "vars/main.yml"
