@@ -1,12 +1,12 @@
 - name: Copy script file to DB host
   win_template:
-    src: "{{ Scriptsource }}/script.js.j2"
-    dest: "{{ MongoFolder }}\\script.js"
+    src: "{{ mongo_script_source }}/script.js.j2"
+    dest: "{{ mongo_folder }}\\script.js"
 
 - name: Change host url
   become_method: runas
   become: true
-  win_shell: mongo {{ Scriptpath }} script.js
+  win_shell: mongo {{ mongo_script_path }} script.js
   args:
     executable: cmd
-    chdir: "{{ MongoFolder }}"
+    chdir: "{{ mongo_folder }}"

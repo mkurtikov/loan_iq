@@ -1,5 +1,5 @@
 ---
-- hosts: RESTAPI
+- hosts: restapi
   gather_facts: no
   roles:
     - RESTAPI

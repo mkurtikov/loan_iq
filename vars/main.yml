@@ -15,29 +15,29 @@ dns_domain_name: develop.fcbt
 ecnryption_password: 'LIQPASSWORD'
 
 #CME
-cme_source_app_folder: '\\10.10.12.150\FBLCME'
-cme_source_web_folder: '\\10.10.12.150\c$\inetpub'
+cme_source_app_folder: '\\FBLQACMEFE1.develop.fcbt\FBLCME'
+cme_source_web_folder: '\\FBLQACMEFE1.develop.fcbt\c$\inetpub'
 cme_target_app_folder: 'C:\'
 cme_target_web_folder: 'C:\'
 cme_db_catalog: FBLCME
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
-Scriptsource: /home/ansible/loan_iq-master/roles/MONGO/templates
-Scriptpath: localhost:27017/monDev
-MongoFolder: C:\Program Files\MongoDB\Server\4.0\bin
+mongo_script_source: /home/ansible/loan_iq-master/roles/MONGO/templates
+mongo_script_path: localhost:27017/monDev
+mongo_folder: C:\Program Files\MongoDB\Server\4.0\bin
 sourceurl: fblqa.develop.fcbt
 targeturl: fblenkedevbe.develop.fcbt
 
 
 
 #BackupDB
-mssql_db_instance: ENKEFBLDEVBE
+mssql_db_instance: EnkeFblDevBe1.develop.fcbt
 db_backup_path: D:\SQLBackup
 
 #Variables Misysbrde
 misys_service_name: 'FBL_Misysboard'
 misys_target_folder: 'C:\LOANIQ\Server'
-misys_source_folder: '\\10.10.12.151\loaniq\Server\misysboard_node'
+misys_source_folder: '\\FBLQAUXP.develop.fcbt\loaniq\Server\misysboard_node'
 misys_source_api_host: 'FBLQARAPI'
 misys_target_api_host: 'ENKEFBLDEVAPI'
 misys_source_fblcmeqa_host: 'FBLCME-QA'
@@ -46,7 +46,7 @@ misys_host_name_source: 'FBLQAUXP.develop.fcbt'
 misys_host_name_target: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
-loaniq_source_app_folder: '\\10.10.12.153\C$\LOANIQ'
+loaniq_source_app_folder: '\\FBLQAMT.develop.fcbt\C$\LOANIQ'
 loaniq_target_app_folder: 'C:\'
 loaniq_service_name: 'STARTLIQ_2020'
 loaniq_db_catalog: 'FBLoanIQ'
