@@ -28,8 +28,6 @@ mongo_folder: C:\Program Files\MongoDB\Server\4.0\bin
 sourceurl: fblqa.develop.fcbt
 targeturl: fblenkedevbe.develop.fcbt
 
-
-
 #BackupDB
 mssql_db_instance: EnkeFblDevBe1.develop.fcbt
 db_backup_path: D:\SQLBackup
