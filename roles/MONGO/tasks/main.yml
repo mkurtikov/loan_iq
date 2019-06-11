@@ -1,12 +1,17 @@
+- name: "Ensure  temp directory exist"
+  win_file:
+    path: 'C:\tmp'
+    state: directory
+
 - name: Copy script file to DB host
   win_template:
     src: "{{ mongo_script_source }}/script.js.j2"
-    dest: "{{ mongo_folder }}\\script.js"
+    dest: "C:\\tmp\\script.js"
 
 - name: Change host url
   become_method: runas
   become: true
-  win_shell: mongo {{ mongo_script_path }} script.js
+  win_shell: mongo {{ mongo_script_path }} c:\tmp\script.js
   args:
     executable: cmd
     chdir: "{{ mongo_folder }}"
