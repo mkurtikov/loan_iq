@@ -22,7 +22,7 @@
     when: stat_file.stat.exists == True
 
   - name: 'Quick Backup to Release folder'
-    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}"
+    win_shell: "mv C:\\LOANIQ C:\\Releases\\FBL_{{ latest_relese }}_{{lookup('pipe', 'date +%m%d%Y%H%M%S')}}" "
     become: true
     become_method: runas
     become_flags: logon_type=new_credentials logon_flags=netcredentials_only
