@@ -28,7 +28,7 @@
 
 - name: 'Check that the FBLCME folder exists'
   win_stat:
-    path: 'C:\FBLCME'
+    path: {{ cme_fblcme_folder }}
   register: stat_file
 
 - name: 'Ensure Release folder exist'
@@ -44,7 +44,7 @@
   when: stat_file.stat.exists == True
 
 - name: 'Quick Backup to Release folder'
-  win_shell: "mv C:\\FBLCME C:\\Releases\\FBL_{{ latest_relese }}_{{lookup('pipe', 'date +%m_%d_%Y_%H:%M:%S')}}"
+  win_shell: "mv {{ cme_fblcme_folder }} C:\\Releases\\FBL_{{ latest_relese }}_{{lookup('pipe', 'date +%m_%d_%Y_%H:%M:%S')}}"
   become: true
   become_method: runas
   become_flags: logon_type=new_credentials logon_flags=netcredentials_only
@@ -64,37 +64,37 @@
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\server.xml file
   become_method: runas
-  win_shell: ((get-content -path "{{ Tomcat }}\\conf\\server.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\server.xml"
+  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\server.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\server.xml"
   become: yes
 
 - name: Change Hostname in C:\FBLCME\Tomcat8.5\web.xml file
   become_method: runas
-  win_shell: ((get-content -path "{{ Tomcat }}\\conf\\web.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\web.xml"
+  win_shell: ((get-content -path "{{ cme_tomcat_folder }}\\conf\\web.xml" -Raw) -replace 'fblcme-qa','enkefbldevcmefe') | set-content -path  "{{ Tomcat }}\\conf\\web.xml"
   become: yes
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\logs folder
   win_file:
-    path: "{{ Tomcat }}\\conf\\logs"
+    path: "{{ cme_tomcat_folder }}\\conf\\logs"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\temp folder
   win_file:
-    path: "{{ Tomcat }}\\conf\\temp"
+    path: "{{ cme_tomcat_folder }}\\conf\\temp"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5\conf\Webapps folder
   win_file:
-    path: "{{ Tomcat }}\\conf\\Webapps"
+    path: "{{ cme_tomcat_folder }}\\conf\\Webapps"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5-Scheduler-DDT\conf\logs folder
   win_file:
-    path: "{{ Tomcat }}-Scheduler-DDT\\conf\\logs"
+    path: "{{ cme_tomcat_folder }}-Scheduler-DDT\\conf\\logs"
     state: absent
 
 - name: Remove C:\FBLCME\Tomcat8.5-Scheduler-HDE\conf\logs folder
   win_file:
-    path: "{{ Tomcat }}-Scheduler-HDE\\conf\\logs"
+    path: "{{ cme_tomcat_folder }}-Scheduler-HDE\\conf\\logs"
     state: absent
 
 - name: Create C:\FBLCME share and set permissions
@@ -111,7 +111,7 @@
   become: yes
   win_share:
     name: FBLCME Tomcat
-    path: "{{ Tomcat }}"
+    path: "{{ cme_tomcat_folder }}"
     full: Administrators
     read: Everyone
 
@@ -119,7 +119,7 @@
   become_method: runas
   become: yes
   win_acl:
-    path: "{{ FBLCME }}"
+    path: "{{ cme_fblcme_folder }}"
     user: Everyone
     rights: ReadAndExecute, ListDirectory
     type: allow
@@ -129,7 +129,7 @@
   become_method: runas
   become: yes
   win_acl:
-    path: "{{ Tomcat }}"
+    path: "{{ cme_tomcat_folder }}"
     user: Everyone
     rights: ReadAndExecute, ListDirectory
     type: allow
@@ -138,7 +138,7 @@
   become_method: runas
   become: yes
   win_acl:
-    path: "{{ FBLCME }}"
+    path: "{{ cme_fblcme_folder }}"
     user: DBA_Admins@nterprise.net
     rights: FullControl
     type: allow
@@ -150,7 +150,7 @@
   become_method: runas
   become: yes
   win_acl:
-    path: "{{ Tomcat }}"
+    path: "{{ cme_tomcat_folder }}"
     user: DBA_Admins@nterprise.net
     rights: FullControl
     type: allow

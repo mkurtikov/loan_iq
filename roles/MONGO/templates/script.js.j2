@@ -1,5 +1,5 @@
 db.getCollection('urls')
-.find({"url": /{{ sourceurl }}/})
-.forEach(function(e,i) {e.url=e.url.replace("{{ sourceurl }}", "{{ targeturl }}");
+.find({"url": /{{ mongo_sourceurl }}/})
+.forEach(function(e,i) {e.url=e.url.replace("{{ mongo_sourceurl }}", "{{ mongo_targeturl }}");
 db.getCollection('urls').save(e);
 });

@@ -22,11 +22,13 @@ cme_target_web_folder: 'C:\'
 cme_db_catalog: FBLCME
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
+cme_tomcat_folder: 'C:\FBLCME\Tomcat8.5'
+cme_fblcme_folder: 'C:\FBLCME'
 mongo_script_source: /home/ansible/loan_iq-master/roles/MONGO/templates
 mongo_script_path: localhost:27017/monDev
 mongo_folder: C:\Program Files\MongoDB\Server\4.0\bin
-sourceurl: fblqa.develop.fcbt
-targeturl: fblenkedevbe.develop.fcbt
+mongo_sourceurl: fblqa.develop.fcbt
+mongo_targeturl: fblenkedevbe.develop.fcbt
 
 #BackupDB
 mssql_db_instance: EnkeFblDevBe1.develop.fcbt
