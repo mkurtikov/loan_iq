@@ -19,7 +19,7 @@ cme_source_app_folder: '\\FBLQACMEFE1.develop.fcbt\FBLCME'
 cme_source_web_folder: '\\FBLQACMEFE1.develop.fcbt\c$\inetpub'
 cme_target_app_folder: 'C:\'
 cme_target_web_folder: 'C:\'
-cme_db_catalog: FBLCME
+cme_db_catalog: 'FBCME'
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
 cme_tomcat_folder: 'C:\FBLCME\Tomcat8.5'
