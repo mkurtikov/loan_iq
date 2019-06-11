@@ -28,7 +28,7 @@
 
 - name: 'Check that the FBLCME folder exists'
   win_stat:
-    path: {{ cme_fblcme_folder }}
+    path: "{{ cme_fblcme_folder }}"
   register: stat_file
 
 - name: 'Ensure Release folder exist'
