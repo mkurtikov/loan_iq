@@ -26,6 +26,10 @@
     start_mode: manual
     username: LocalSystem
 
+- name: 'Waiting for 3 minutes for services to stop'
+  pause:
+    minutes: 3
+
 - name: 'Check that the FBLCME folder exists'
   win_stat:
     path: "{{ cme_fblcme_folder }}"

@@ -5,6 +5,10 @@
     name: "{{ loaniq_service_name }}"
     state: stopped
 
+- name: 'Waiting for 3 minutes for services to stop'
+  pause:
+    minutes: 3
+
 - name: 'Check that the LOANIQ folder exists'
   win_stat:
     path: 'C:\LOANIQ'
