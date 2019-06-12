@@ -1,5 +1,5 @@
 ---
-  - name: "Check that SQLSERVERAGENT started"
+  - name: "Check that SQLSERVERAGENT stopped"
     win_service:
       name: "{{ rest_api_service_name }}"
       state: stopped

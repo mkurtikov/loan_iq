@@ -1,4 +1,4 @@
-- name: Check that loaniq service started
+- name: Check that loaniq service stopped
   become_method: runas
   become: yes
   win_service:

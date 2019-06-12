@@ -1,5 +1,4 @@
 ---
-
   - name: Stop a service
     win_service:
       name: "{{ misys_service_name }}"
