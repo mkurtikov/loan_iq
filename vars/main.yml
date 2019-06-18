@@ -1,6 +1,8 @@
 #Connection
 ansible_winrm_transport: ntlm
+#Ansible user
 ansible_user: DEVELOP\svcEnkeDeployments
+#Ansible password
 ansible_password: FarmCreditBank#1
 ansible_connection: winrm
 ansible_port: 5985
@@ -10,34 +12,43 @@ ansible_become_user: "{{ ansible_user }}"
 ansible_become_password: "{{ ansible_password }}"
 
 #General
+#Release version - used in backup dir naming
 latest_relese: '2.2.13'
-dns_domain_name: develop.fcbt
+# Password used for Encrypt password
 ecnryption_password: 'LIQPASSWORD'
 
 #CME
+#CME source folder for FBLCE
 cme_source_app_folder: '\\FBLQACMEFE1.develop.fcbt\FBLCME'
+#CME source folder for inetpub
 cme_source_web_folder: '\\FBLQACMEFE1.develop.fcbt\c$\inetpub'
 cme_target_app_folder: 'C:\'
 cme_target_web_folder: 'C:\'
+#CME DB catalog name
 cme_db_catalog: 'FBCME'
 cme_admin_user: iyakubenko0519@nterprise.net
 cme_admin_password: L3tsdanc311!!Ok3
 cme_tomcat_folder: 'C:\FBLCME\Tomcat8.5'
 cme_fblcme_folder: 'C:\FBLCME'
 mongo_script_source: roles/MONGO/templates
+#MongoDB connection line
 mongo_script_path: localhost:27017/monDev
 mongo_folder: 'C:\Program Files\MongoDB\Server\3.4\bin'
+#MongoDB string to change(source -> target)
 mongo_sourceurl: fblqa.develop.fcbt
 mongo_targeturl: fblenkedevbe.develop.fcbt
 
 #BackupDB
+#DB host
 mssql_db_instance: EnkeFblDevBe1.develop.fcbt
+#Path to place backup
 db_backup_path: D:\SQLBackup
 
-#Variables Misysbrde
+#Variables Misysboard
+#Misys board target folder
+misys_source_folder: '\\FBLQAUXP.develop.fcbt\loaniq\Server\misysboard_node'
 misys_service_name: 'FBL_Misysboard'
 misys_target_folder: 'C:\LOANIQ\Server'
-misys_source_folder: '\\FBLQAUXP.develop.fcbt\loaniq\Server\misysboard_node'
 misys_source_api_host: 'FBLQARAPI'
 misys_target_api_host: 'ENKEFBLDEVAPI'
 misys_source_fblcmeqa_host: 'FBLCME-QA'
@@ -46,12 +57,14 @@ misys_host_name_source: 'FBLQAUXP.develop.fcbt'
 misys_host_name_target: 'ENKEFBLDEVUXP.develop.fcbt'
 
 #Variables MT
+#LoanIQ source folder
 loaniq_source_app_folder: '\\FBLQAMT.develop.fcbt\C$\LOANIQ'
 loaniq_target_app_folder: 'C:\'
 loaniq_service_name: 'STARTLIQ_2020'
 loaniq_db_catalog: 'FBLoanIQ'
 
 #RESTAPI
+#RestAPi source host
 rest_api_main_source_server: FBLQARAPI
 rest_api_main_target_server: ENKEFBLDEVRAPI
 rest_api_share_path: '\\{{ rest_api_main_source_server }}\C$\LOANIQ'
