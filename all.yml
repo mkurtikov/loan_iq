@@ -13,6 +13,13 @@
   vars_files:
     - "vars/main.yml"
 
+- hosts: mongo
+  gather_facts: false
+  roles:
+    - MONGO
+  vars_files:
+    - "vars/main.yml"
+
 - hosts: loaniqdb
   gather_facts: false
   roles:
