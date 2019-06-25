@@ -35,8 +35,8 @@ mongo_script_source: roles/MONGO/templates
 mongo_script_path: localhost:27017/monDev
 mongo_folder: 'C:\Program Files\MongoDB\Server\3.4\bin'
 #MongoDB string to change(source -> target)
-mongo_sourceurl: fblqa.develop.fcbt
-mongo_targeturl: fblenkedevbe.develop.fcbt
+mongo_sourceurl: fblqacmefe1
+mongo_targeturl: fblenkedevcmefe
 
 #BackupDB
 #DB host
