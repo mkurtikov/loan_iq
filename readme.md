@@ -27,6 +27,22 @@ ENKEFBLDEVRAPI.develop.fcbt
 [misysboard]
 ENKEFBLDEVUXP.develop.fcbt
 ```
+
+### Encrypt/Decrypt var/main.yml
+
+## Encrypt
+
+```bash
+ansible-vault encrypt vars/main.yml
+```
+
+## Decript
+
+```bash
+ansible-vault decrypt vars/main.yml
+```
+
+
 ### Change variables in vars/main.yml
 
 ## USAGE
