@@ -19,8 +19,8 @@ cme_source_web_folder: '\\FBLQACMEFE1.develop.fcbt\c$\inetpub'
 
 #CME DB catalog name
 cme_db_catalog: 'FBCME'
-cme_admin_user: iyakubenko0519@nterprise.net
-cme_admin_password: L3tsdanc311!!Ok3
+cme_admin_user: DEVELOP\svcEnkeDeployments
+cme_admin_password: FarmCreditBank#1
 #MongoDB connection line
 mongo_script_path: localhost:27017/monDev
 mongo_folder: 'C:\Program Files\MongoDB\Server\3.4\bin'
